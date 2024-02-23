@@ -3,20 +3,41 @@
 {% block content %}
 
 <p>
-Welcome to {{ username }}'s profile.
+Welcome to {{ user.username }}'s profile.
 </p>
-
-<!-- TODO: Display the user's actual favorites here -->
 
 <p>
-    {{ username }}'s favorite books are:
+    {{ user.username }}'s favorite books are:
 
     <ul>
-        <li>Your</li>
-        <li>Favorites</li>
-        <li>Go</li>
-        <li>Here</li>
+        {% for book in user.favorite_books %}
+            <li>{{ book.title }}</li>
+        {% endfor %}
     </ul>
 </p>
+
+<form method="POST" action="{{ url_for('main.profile', username=user.username) }}">
+    {{ form.csrf_token }}
+    <fieldset>
+        <legend>Edit this user</legend>
+
+        {{ form.username.label }}
+        {{ form.username }}
+
+        {% if form.username.errors %}
+            <!-- Show form errors -->
+            <ul>
+            {% for error in form.username.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {{ form.books.label }}
+        {{ form.books }}
+            
+        {{ form.submit }}
+    </fieldset>
+</form>
 
 {% endblock %}

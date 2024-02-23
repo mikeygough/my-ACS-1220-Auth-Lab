@@ -1,9 +1,34 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+<form method="POST" action="{{ url_for('main.create_author') }}">
+  {{ form.csrf_token }}
+  <fieldset>
+    <legend>Enter an author</legend>
 
-<p>Author creation form.</p>
+    {{ form.name.label }} {{ form.name }}
+    
+    {% if form.name.errors %}
+    <!-- Show form errors -->
+    <ul>
+      {% for error in form.name.errors %}
+      <li class="error">{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
-<!-- TODO: Add a <form> element here and use the form variable to show the labels & fields -->
+    {{ form.biography.label }} {{ form.biography(placeholder="Ernest Miller Hemingway was an American novelist, short-story writer, and journalist...") }}
+    
+    {% if form.biography.errors %}
+    <!-- Show form errors -->
+    <ul>
+      {% for error in form.biography.errors %}
+      <li class="error">{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {{ form.submit }}
+  </fieldset>
+</form>
 
 {% endblock %}
